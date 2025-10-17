@@ -30,7 +30,10 @@
 			Data provided by <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer">NASA API</a>
 			| NEO Visualizations are simplified models and not to scale
 		</p>
-		<p>© {new Date().getFullYear()} Asteroid Radar</p>
+		<p>
+			© {new Date().getFullYear()}
+			<a href="https://github.com/npehellemons" target="_blank" rel="noreferrer">Nicky Hellemons</a>
+		</p>
 	</footer>
 </div>
 
@@ -47,6 +50,11 @@
 			sans-serif;
 		background-color: #f5f5f5;
 		color: #333;
+	}
+
+	:global(*) {
+		--header-height: 64px;
+		--footer-height: 100px;
 	}
 
 	.app {
@@ -93,12 +101,18 @@
 		color: rgba(255, 255, 255, 0.8);
 		text-align: center;
 		padding: 1.5rem;
-		margin-top: 2rem;
 	}
 
 	footer a {
 		color: white;
 		text-decoration: none;
+	}
+
+	footer p {
+		margin: 0 0 1rem 0;
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	footer a:hover {
