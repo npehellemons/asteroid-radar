@@ -25,8 +25,8 @@
 	<meta name="description" content="Track and visualize near earth objects in real time" />
 </svelte:head>
 
-<div class="app" class:fullscreen={$isFullScreen}>
-	{#if !$isFullScreen}
+<div class="app" class:fullscreen={fullScreenValue}>
+	{#if !fullScreenValue}
 		<header class="main-header">
 			<div class="header-content">
 				<div class="logo">
@@ -38,11 +38,11 @@
 		</header>
 	{/if}
 
-	<main class:fullscreen-main={$isFullScreen}>
+	<main class:fullscreen-main={fullScreenValue}>
 		{@render children?.()}
 	</main>
 
-	{#if !$isFullScreen}
+	{#if !fullScreenValue}
 		<footer>
 			<p>
 				Data provided by <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer"
@@ -113,6 +113,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+
+		@media (max-width: 600px) {
+			justify-content: center;
+		}
 	}
 
 	.logo {
@@ -127,6 +131,10 @@
 		font-style: italic;
 		opacity: 0.8;
 		margin: 0;
+
+		@media (max-width: 600px) {
+			display: none;
+		}
 	}
 
 	main {
