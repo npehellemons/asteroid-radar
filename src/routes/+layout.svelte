@@ -1,7 +1,22 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import { isFullScreen } from '$lib/stores/fullscreen';
+	import { browser } from '$app/environment';
 
 	let { children } = $props();
+	// Default to false for SSR
+	let fullScreenValue = $state(false);
+	
+	// Only subscribe to the store on the client side
+	$effect(() => {
+		if (browser) {
+			const unsubscribe = isFullScreen.subscribe(value => {
+				fullScreenValue = value;
+			});
+			
+			return unsubscribe;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -10,31 +25,39 @@
 	<meta name="description" content="Track and visualize near earth objects in real time" />
 </svelte:head>
 
-<div class="app">
-	<header class="main-header">
-		<div class="header-content">
-			<div class="logo">
-				<img src={favicon} alt="Asteroid Radar logo" width="32" height="32" />
-				<span>Asteroid Radar</span>
+<div class="app" class:fullscreen={$isFullScreen}>
+	{#if !$isFullScreen}
+		<header class="main-header">
+			<div class="header-content">
+				<div class="logo">
+					<img src={favicon} alt="Asteroid Radar logo" width="32" height="32" />
+					<span>Asteroid Radar</span>
+				</div>
+				<p class="tagline">Near Earth Object Visualization</p>
 			</div>
-			<p class="tagline">Near Earth Object Visualization</p>
-		</div>
-	</header>
+		</header>
+	{/if}
 
-	<main>
+	<main class:fullscreen-main={$isFullScreen}>
 		{@render children?.()}
 	</main>
 
-	<footer>
-		<p>
-			Data provided by <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer">NASA API</a>
-			| NEO Visualizations are simplified models and not to scale
-		</p>
-		<p>
-			© {new Date().getFullYear()}
-			<a href="https://github.com/npehellemons" target="_blank" rel="noreferrer">Nicky Hellemons</a>
-		</p>
-	</footer>
+	{#if !$isFullScreen}
+		<footer>
+			<p>
+				Data provided by <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer"
+					>NASA API</a
+				>
+				| NEO Visualizations are simplified models and not to scale
+			</p>
+			<p>
+				© {new Date().getFullYear()}
+				<a href="https://github.com/npehellemons" target="_blank" rel="noreferrer"
+					>Nicky Hellemons</a
+				>
+			</p>
+		</footer>
+	{/if}
 </div>
 
 <style>
@@ -48,6 +71,20 @@
 			'Segoe UI',
 			Roboto,
 			sans-serif;
+
+		.fullscreen {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+		}
+
+		.fullscreen-main {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+			padding: 0;
+		}
 		background-color: #f5f5f5;
 		color: #333;
 	}
