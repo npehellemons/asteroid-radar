@@ -6,14 +6,14 @@
 	let { children } = $props();
 	// Default to false for SSR
 	let fullScreenValue = $state(false);
-	
+
 	// Only subscribe to the store on the client side
 	$effect(() => {
 		if (browser) {
-			const unsubscribe = isFullScreen.subscribe(value => {
+			const unsubscribe = isFullScreen.subscribe((value) => {
 				fullScreenValue = value;
 			});
-			
+
 			return unsubscribe;
 		}
 	});
