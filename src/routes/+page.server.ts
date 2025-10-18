@@ -296,7 +296,7 @@ export const load: PageServerLoad = async () => {
 
             // Add the test NEOs to today's data
             const todayKey = Object.keys(data.near_earth_objects)[0];
-            data.near_earth_objects[todayKey] = [testNeo, testNeo2, testNeo3, ...data.near_earth_objects[todayKey]];
+            data.near_earth_objects[todayKey] = [...data.near_earth_objects[todayKey]];
 
             // Update element_count
             data.element_count += 2;
